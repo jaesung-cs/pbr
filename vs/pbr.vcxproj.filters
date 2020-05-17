@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="lib">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{24bf8ad9-96cc-4b15-aac9-3cfc5631e858}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\stb">
+      <UniqueIdentifier>{86d54e3c-bf74-4277-919c-dd1a8b7cd58d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\glad">
+      <UniqueIdentifier>{088380a9-f1d2-4341-a439-99ae6815fcf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\pbr">
+      <UniqueIdentifier>{4097f6a6-f8c2-45b1-b994-a9a7d10d4672}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\pbr\render">
+      <UniqueIdentifier>{eb3ec709-50f9-485e-9162-d3267cf27913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shader">
+      <UniqueIdentifier>{f8d7d63b-cc65-409d-86a7-d63720845daa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\pbr\render\gl">
+      <UniqueIdentifier>{dded8333-fe90-4b32-91ed-51788a565795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\pbr\utils">
+      <UniqueIdentifier>{9fad990a-c875-446e-8982-bd306c67b51e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\pbr\robot">
+      <UniqueIdentifier>{cb62cd47-2d54-4bce-9d3b-8d0936d4042f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\pbr\planner">
+      <UniqueIdentifier>{c5b56ad8-5baf-4d6b-895e-a89fcae0b00a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\pbr\data">
+      <UniqueIdentifier>{cbf46f5c-7f05-445f-b530-c1220d04a725}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\pbr\scene">
+      <UniqueIdentifier>{f95511c5-d215-4ef3-ae6e-cb8ff986e37c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\tinyxml2">
+      <UniqueIdentifier>{fe1910f6-ed3a-4b6b-8899-1c7da39f98ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\pbr\widget">
+      <UniqueIdentifier>{fefe920d-de0b-438b-854a-6cc99bdca590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\pbr\sensor">
+      <UniqueIdentifier>{8c461051-3963-46f3-8b39-e5d19fa7d75c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\lib\glad\glad.c">
+      <Filter>lib\glad</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\engine.cc">
+      <Filter>src\pbr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\main.cc">
+      <Filter>src\pbr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\render\renderer.cc">
+      <Filter>src\pbr\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\render\program.cc">
+      <Filter>src\pbr\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\render\shader.cc">
+      <Filter>src\pbr\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\render\camera.cc">
+      <Filter>src\pbr\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\render\gl\gl_program.cc">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\render\gl\gl_shader.cc">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\render\gl\gl_model.cc">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\utils\stbi_image_helper.cc">
+      <Filter>src\pbr\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\data\dataset.cc">
+      <Filter>src\pbr\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\robot\robot_model.cc">
+      <Filter>src\pbr\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\robot\robot_model_loader.cc">
+      <Filter>src\pbr\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\robot\robot_state.cc">
+      <Filter>src\pbr\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\robot\robot_trajectory.cc">
+      <Filter>src\pbr\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\planner\planner.cc">
+      <Filter>src\pbr\planner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\scene\scene.cc">
+      <Filter>src\pbr\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\scene\scene_node.cc">
+      <Filter>src\pbr\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\scene\scene_mesh.cc">
+      <Filter>src\pbr\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\scene\scene_axis.cc">
+      <Filter>src\pbr\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\scene\scene_grid.cc">
+      <Filter>src\pbr\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\render\gl\gl_axis.cc">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\render\gl\gl_grid.cc">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\tinyxml2\tinyxml2.cpp">
+      <Filter>lib\tinyxml2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\robot\robot_joint.cc">
+      <Filter>src\pbr\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\robot\robot_link.cc">
+      <Filter>src\pbr\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\scene\scene_robot.cc">
+      <Filter>src\pbr\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\data\dataset_wnp.cc">
+      <Filter>src\pbr\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\data\pointcloud.cc">
+      <Filter>src\pbr\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\widget\widget.cc">
+      <Filter>src\pbr\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\widget\image_widget.cc">
+      <Filter>src\pbr\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\widget\scene_widget.cc">
+      <Filter>src\pbr\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\sensor\kinect2.cc">
+      <Filter>src\pbr\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\sensor\color_sensor.cc">
+      <Filter>src\pbr\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\sensor\depth_sensor.cc">
+      <Filter>src\pbr\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\render\gl\gl_image_point.cc">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\scene\scene_pointcloud.cc">
+      <Filter>src\pbr\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\render\gl\gl_pointcloud.cc">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\lib\glad\glad.h">
+      <Filter>lib\glad</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\stb\stb_image.h">
+      <Filter>lib\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\stb\stb_image_write.h">
+      <Filter>lib\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\engine.h">
+      <Filter>src\pbr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\renderer.h">
+      <Filter>src\pbr\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\types.h">
+      <Filter>src\pbr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\program.h">
+      <Filter>src\pbr\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\shader.h">
+      <Filter>src\pbr\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\camera.h">
+      <Filter>src\pbr\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\gl\gl_program.h">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\gl\gl_shader.h">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\gl\gl_texture.h">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\gl\gl_model.h">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\utils\stbi_image_helper.h">
+      <Filter>src\pbr\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\data\dataset.h">
+      <Filter>src\pbr\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\robot\robot_trajectory.h">
+      <Filter>src\pbr\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\robot\robot_model.h">
+      <Filter>src\pbr\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\robot\robot_model_loader.h">
+      <Filter>src\pbr\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\robot\robot_state.h">
+      <Filter>src\pbr\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\planner\planner.h">
+      <Filter>src\pbr\planner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\scene\scene.h">
+      <Filter>src\pbr\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\scene\scene_node.h">
+      <Filter>src\pbr\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\scene\light.h">
+      <Filter>src\pbr\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\scene\material.h">
+      <Filter>src\pbr\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\scene\scene_mesh.h">
+      <Filter>src\pbr\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\scene\scene_axis.h">
+      <Filter>src\pbr\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\scene\scene_grid.h">
+      <Filter>src\pbr\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\gl\gl_axis.h">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\gl\gl_grid.h">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\tinyxml2\tinyxml2.h">
+      <Filter>lib\tinyxml2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\robot\robot_joint.h">
+      <Filter>src\pbr\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\robot\robot_link.h">
+      <Filter>src\pbr\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\scene\scene_robot.h">
+      <Filter>src\pbr\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\data\dataset_wnp.h">
+      <Filter>src\pbr\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\data\pointcloud.h">
+      <Filter>src\pbr\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\widget\widget.h">
+      <Filter>src\pbr\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\data\image.h">
+      <Filter>src\pbr\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\widget\image_widget.h">
+      <Filter>src\pbr\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\widget\scene_widget.h">
+      <Filter>src\pbr\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\sensor\kinect2.h">
+      <Filter>src\pbr\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\sensor\color_sensor.h">
+      <Filter>src\pbr\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\sensor\depth_sensor.h">
+      <Filter>src\pbr\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\gl\gl_image_point.h">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\scene\scene_pointcloud.h">
+      <Filter>src\pbr\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\gl\gl_pointcloud.h">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\sensor\camera_param.h">
+      <Filter>src\pbr\sensor</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\shader\color.frag">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\color.vert">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\color2d.frag">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\color2d.vert">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\model.frag">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\model.vert">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\image_color.vert">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\image_color.frag">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\image_depth.frag">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\image_depth.vert">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\image_color.geom">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\image_depth.geom">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\pointcloud.frag">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\pointcloud.vert">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\..\fetch_ros\fetch_description\robots\fetch.urdf">
+      <Filter>data</Filter>
+    </None>
+    <None Include="..\src\shader\pointcloud.geom">
+      <Filter>src\shader</Filter>
+    </None>
+  </ItemGroup>
+</Project>
