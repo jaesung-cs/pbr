@@ -3,6 +3,7 @@
 
 #include <string>
 #include <future>
+#include <iostream>
 
 #include <glad/glad.h>
 
@@ -30,7 +31,7 @@ public:
 
   explicit Image(const std::string& filename)
   {
-    Load(filename);
+    Load<unsigned char>(filename);
   }
 
   template <typename T>
@@ -41,7 +42,7 @@ public:
     num_components_ = num_components;
 
     type_ = DataType<T>();
-    auto arr = new T[static_cast<size_t>(width) * height * num_components];
+    auto arr = reinterpret_cast<T*>(malloc(sizeof(T) * static_cast<size_t>(width) * height * num_components));
 
     for (size_t i = 0; i < width * height * num_components; i++)
       arr[i] = default_value;
@@ -57,7 +58,7 @@ public:
     num_components_ = num_components;
 
     type_ = DataType<T>();
-    auto arr = new T[static_cast<size_t>(width) * height * num_components];
+    auto arr = reinterpret_cast<T*>(malloc(sizeof(T) * static_cast<size_t>(width) * height * num_components));
 
     size_t i = 0;
     for (auto c : data)
@@ -68,7 +69,8 @@ public:
 
   ~Image()
   {
-    Clear();
+    if (data_)
+      free(data_);
   }
 
   // Copy constructors
@@ -77,7 +79,7 @@ public:
   {
     const int buffer_size = rhs.width_ * rhs.height_ * rhs.num_components_;
 
-    T* result = new T[buffer_size];
+    auto result = reinterpret_cast<T*>(malloc(sizeof(T) * buffer_size));
     auto arr = reinterpret_cast<T*>(rhs.data_);
 
     for (int i = 0; i < buffer_size; i++)
@@ -127,7 +129,7 @@ public:
 
       if (data_)
       {
-        delete data_;
+        free(data_);
         data_ = nullptr;
       }
 
@@ -196,7 +198,10 @@ public:
   void Clear()
   {
     if (data_)
-      delete data_;
+    {
+      free(data_);
+      data_ = 0;
+    }
 
     filename_.clear();
 
@@ -234,7 +239,10 @@ public:
   {
     // Delete any previous texture
     if (data_)
-      delete data_;
+    {
+      free(data_);
+      data_ = 0;
+    }
 
     filename_ = filename;
     type_ = Type::UNSIGNED_BYTE;
@@ -248,7 +256,10 @@ public:
   {
     // Delete any previous texture
     if (data_)
-      delete data_;
+    {
+      free(data_);
+      data_ = 0;
+    }
 
     filename_ = filename;
     type_ = Type::UNSIGNED_SHORT;

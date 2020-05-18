@@ -371,9 +371,6 @@ void Engine::Run()
 
   int frame_count = 0;
 
-  // Pointcloud
-  Pointcloud pointcloud;
-
   while (!glfwWindowShouldClose(window_))
   {
     // Update events
@@ -395,33 +392,26 @@ void Engine::Run()
     {
       kinect_color_image_widget_->NeedUpdate();
       kinect_depth_image_widget_->NeedUpdate();
-      //pointcloud_node_->NeedUpdate();
     }
 
     // Load images from dataset
-    color_image_widget_->UpdateImage(dataset_->GetColorImage());
-    depth_image_widget_->UpdateImage(dataset_->GetDepthImage());
 
     // Generate point cloud using Kinect v2 mapper
     /*
     if (kinect_->GeneratePointcloudWithCoordinateMapper(dataset_->GetColorImage(), dataset_->GetDepthImage(), pointcloud_node_->Pointcloud()))
-    {
-      pointcloud_node_->NeedUpdate();
       dataset_->NextFrame();
-    }
     */
 
     // Generate point cloud using camera parameters
     /*
     if (kinect_->GeneratePointcloudWithCameraParameters(dataset_->GetColorImage(), dataset_->GetDepthImage(), pointcloud_node_->Pointcloud()))
-    {
-      pointcloud_node_->NeedUpdate();
       dataset_->NextFrame();
-    }
     */
 
+    color_image_widget_->UpdateImage(dataset_->GetColorImage());
+    depth_image_widget_->UpdateImage(dataset_->GetDepthImage());
+
     // Draw pointcloud without creating pointcloud
-    //pointcloud_node_->NeedUpdate();
     dataset_->NextFrame();
 
     // Draw scene

@@ -30,6 +30,7 @@ public:
 
   std::shared_ptr<Image> LoadColorImage(int frame);
   std::shared_ptr<Image> LoadDepthImage(int frame);
+  std::shared_ptr<Image> LoadDepthRawImage(int frame);
 
 private:
   void LoadCurrentSequenceImages();

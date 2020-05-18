@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <future>
 #include <thread>
+#include <fstream>
 
 namespace pbr
 {
@@ -14,7 +15,7 @@ namespace fs = std::filesystem;
 DatasetWnp::DatasetWnp(const std::string& directory)
   : Dataset(), directory_(directory)
 {
-  for (auto base : { "office", "kitchen1", "kitchen2" })
+  for (auto base : { "kitchen1", "kitchen2", "office" })
   {
     for (auto& it : fs::directory_iterator(directory_ + "\\" + base))
     {
@@ -35,11 +36,6 @@ DatasetWnp::DatasetWnp(const std::string& directory)
     }
   }
 
-  /*
-  sequences_.emplace_back("office\\data_03-18-03");
-  frames_.emplace_back();
-  */
-
   SequenceChanged();
 }
 
@@ -59,7 +55,7 @@ void DatasetWnp::LoadCurrentSequenceImages()
   for (int i = 0; i < frames_[Sequence()].size(); i++)
   {
     color_futures_[i] = std::async(std::launch::async, [this, i] { return LoadColorImage(i); });
-    depth_futures_[i] = std::async(std::launch::async, [this, i] { return LoadDepthImage(i); });
+    depth_futures_[i] = std::async(std::launch::async, [this, i] { return LoadDepthRawImage(i); });
   }
   for (int i = 0; i < frames_[Sequence()].size(); i++)
   {
@@ -93,6 +89,18 @@ std::shared_ptr<Image> DatasetWnp::LoadColorImage(int frame)
 std::shared_ptr<Image> DatasetWnp::GetColorImage()
 {
   return color_images_[Frame()];
+}
+
+std::shared_ptr<Image> DatasetWnp::LoadDepthRawImage(int frame)
+{
+  auto filename = directory_ + "\\" + sequences_[Sequence()] + "\\depth_raw\\" + frames_[Sequence()][frame] + ".raw";
+  auto image = std::make_shared<Image>(DepthWidth(), DepthHeight(), 1, (unsigned short)0);
+
+  std::ifstream in(filename, std::ios::binary);
+  in.read(image->Data<char>(), sizeof(unsigned short) * DepthWidth() * DepthHeight());
+  in.close();
+
+  return image;
 }
 
 std::shared_ptr<Image> DatasetWnp::LoadDepthImage(int frame)
