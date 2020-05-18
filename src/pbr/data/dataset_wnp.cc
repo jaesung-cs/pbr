@@ -68,12 +68,12 @@ void DatasetWnp::LoadCurrentSequenceImages()
 
 DatasetWnp::~DatasetWnp() = default;
 
-int DatasetWnp::NumSequences()
+int DatasetWnp::NumSequences() const
 {
   return sequences_.size();
 }
 
-int DatasetWnp::NumFrames()
+int DatasetWnp::NumFrames() const
 {
   return frames_[Sequence()].size();
 }

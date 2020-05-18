@@ -21,6 +21,12 @@ Pointcloud Dataset::GetPointcloud()
   return Pointcloud();
 }
 
+void Dataset::SetTime(double time)
+{
+  int frame = static_cast<int>(time * FramesPerSecond());
+  SelectFrame(frame);
+}
+
 void Dataset::PreviousSequence()
 {
   if (sequence_idx_ > 0)
@@ -51,6 +57,18 @@ void Dataset::NextFrame()
 {
   if (frame_idx_ < NumFrames() - 1)
     frame_idx_++;
+}
+
+void Dataset::SelectFrame(int frame)
+{
+  if (frame < 0)
+    frame_idx_ = 0;
+
+  else if (frame >= NumFrames())
+    frame_idx_ = NumFrames() - 1;
+
+  else
+    frame_idx_ = frame;
 }
 
 void Dataset::Rewind()

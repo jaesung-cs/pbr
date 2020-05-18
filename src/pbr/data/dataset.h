@@ -17,8 +17,9 @@ public:
   virtual int DepthWidth() const noexcept { return 0; }
   virtual int DepthHeight() const noexcept { return 0; }
 
-  virtual int NumSequences() { return 0; }
-  virtual int NumFrames() { return 0; }
+  virtual int NumSequences() const { return 0; }
+  virtual int NumFrames() const { return 0; }
+  virtual double FramesPerSecond() const { return 30.; }
 
   virtual std::shared_ptr<Image> GetColorImage();
   virtual std::shared_ptr<Image> GetDepthImage();
@@ -27,10 +28,13 @@ public:
   auto Sequence() const noexcept { return sequence_idx_; }
   auto Frame() const noexcept { return frame_idx_; }
 
+  void SetTime(double time);
+
   void PreviousSequence();
   void NextSequence();
   void PreviousFrame();
   void NextFrame();
+  void SelectFrame(int frame);
   void Rewind();
 
   virtual void SequenceChanged() {}

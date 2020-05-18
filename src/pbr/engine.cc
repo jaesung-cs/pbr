@@ -116,9 +116,31 @@ void Engine::Keyboard(int key, int action, int mods)
     switch (key)
     {
       // Randomize robot joint values
-    case GLFW_KEY_R:
+    case GLFW_KEY_T:
       RandomizeRobotJoints();
       break;
+
+      // Restart animation
+    case GLFW_KEY_ENTER:
+      animation_ = true;
+      animation_time_ = Duration(0.);
+      animation_start_time_ = Clock::now();
+    break;
+
+      // Toggle animation
+    case GLFW_KEY_SPACE:
+    {
+      if (!animation_)
+      {
+        animation_ = true;
+        animation_start_time_ = Clock::now() - animation_time_;
+      }
+      else
+      {
+        animation_ = false;
+      }
+    }
+    break;
     }
   }
 
@@ -148,16 +170,15 @@ void Engine::Keyboard(int key, int action, int mods)
         // Change sequence
       case GLFW_KEY_UP:
         dataset_->PreviousSequence();
+        animation_time_ = Duration(0.);
+        animation_start_time_ = Clock::now();
         break;
 
         // Change sequence
       case GLFW_KEY_DOWN:
         dataset_->NextSequence();
-        break;
-
-        // Restart animation
-      case GLFW_KEY_ENTER:
-        dataset_->Rewind();
+        animation_time_ = Duration(0.);
+        animation_start_time_ = Clock::now();
         break;
       }
     }
@@ -183,8 +204,12 @@ void Engine::Keyboard(int key, int action, int mods)
       move_key_pressed_[3] = action == GLFW_PRESS;
       break;
 
-    case GLFW_KEY_SPACE:
+    case GLFW_KEY_I:
       move_key_pressed_[4] = action == GLFW_PRESS;
+      break;
+
+    case GLFW_KEY_K:
+      move_key_pressed_[5] = action == GLFW_PRESS;
       break;
     }
   }
@@ -359,33 +384,31 @@ void Engine::Run()
   Resize(width_, height_);
 
   // Main loop
-  using Clock = std::chrono::system_clock;
-  using Timestamp = Clock::time_point;
-  using Duration = std::chrono::duration<double>;
-
-  constexpr double fps = 60.;
-  auto frame_length = Duration(1. / fps);
-  Timestamp first_timestamp = Clock::now();
-  Timestamp last_update_time = Clock::now();
+  animation_start_time_ = Clock::now();
   Timestamp camera_last_timestamp = Clock::now();
 
-  int frame_count = 0;
-
+  auto robot_camera_node = robot_node_->Link("head_camera_link");
   while (!glfwWindowShouldClose(window_))
   {
+    Timestamp current_time = Clock::now();
+
     // Update events
     glfwPollEvents();
 
-    Timestamp current_time = Clock::now();
+    //
+    // Update scene
+    //
+
+    // Animation time
+    if (animation_)
+      animation_time_ = current_time - animation_start_time_;
+    dataset_->SetTime(animation_time_.count());
 
     // Set headmount camera position
-    auto robot_camera_node = robot_node_->Link("head_camera_link");
     auto headmount_camera_transform = robot_camera_node->TransformFromRoot();
     auto headmount_camera_transform_matrix = headmount_camera_transform.matrix().cast<float>();
     headmount_camera_->SetDirection(headmount_camera_transform_matrix.block(0, 0, 3, 1));
     headmount_camera_->SetPosition(headmount_camera_transform_matrix.block(0, 3, 3, 1));
-
-    // Update scene
 
     // Kinect scene update
     if (kinect_->Update(*kinect_color_image_widget_->Image(), *kinect_depth_image_widget_->Image(), pointcloud_node_->Pointcloud()))
@@ -395,26 +418,12 @@ void Engine::Run()
     }
 
     // Load images from dataset
-
-    // Generate point cloud using Kinect v2 mapper
-    /*
-    if (kinect_->GeneratePointcloudWithCoordinateMapper(dataset_->GetColorImage(), dataset_->GetDepthImage(), pointcloud_node_->Pointcloud()))
-      dataset_->NextFrame();
-    */
-
-    // Generate point cloud using camera parameters
-    /*
-    if (kinect_->GeneratePointcloudWithCameraParameters(dataset_->GetColorImage(), dataset_->GetDepthImage(), pointcloud_node_->Pointcloud()))
-      dataset_->NextFrame();
-    */
-
     color_image_widget_->UpdateImage(dataset_->GetColorImage());
     depth_image_widget_->UpdateImage(dataset_->GetDepthImage());
 
-    // Draw pointcloud without creating pointcloud
-    dataset_->NextFrame();
-
+    //
     // Draw scene
+    //
     renderer_.Draw();
 
     // Sleep until next update
@@ -423,22 +432,14 @@ void Engine::Run()
 
     if (duration < frame_length)
       std::this_thread::sleep_for(frame_length - duration);
-      */
-    //using namespace std::chrono_literals;
-    //std::this_thread::sleep_for(10ms);
-
     last_update_time = Clock::now();
+
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(10ms);
+    */
 
     // Buffer swap
     glfwSwapBuffers(window_);
-
-    // DEBUG: print fps
-    /*
-    frame_count++;
-    auto running_time = Duration(current_time - first_timestamp).count();
-
-    std::cout << frame_count / running_time << std::endl;
-    */
 
     // Move camera when the scene is viewed from main camera
     Duration camera_duration = current_time - camera_last_timestamp;
@@ -455,6 +456,8 @@ void Engine::Run()
         camera_->Translate(camera_move_speed_ * camera_duration.count(), 0.);
       if (move_key_pressed_[4])
         camera_->TranslateUpward(camera_move_speed_ * camera_duration.count());
+      if (move_key_pressed_[5])
+        camera_->TranslateUpward(-camera_move_speed_ * camera_duration.count());
     }
     camera_last_timestamp = current_time;
   }

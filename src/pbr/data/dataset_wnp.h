@@ -19,8 +19,9 @@ public:
   int DepthWidth() const noexcept override { return 512; }
   int DepthHeight() const noexcept override { return 424; }
 
-  int NumSequences() override;
-  int NumFrames() override;
+  int NumSequences() const override;
+  int NumFrames() const override;
+  double FramesPerSecond() const override { return 5.; }
 
   void SequenceChanged() override;
 

@@ -20,6 +20,11 @@ namespace pbr
 {
 class Engine
 {
+private:
+  using Clock = std::chrono::high_resolution_clock;
+  using Timestamp = std::chrono::time_point<Clock, std::chrono::duration<double>>;
+  using Duration = std::chrono::duration<double>;
+
 public:
   Engine();
   ~Engine();
@@ -77,8 +82,13 @@ private:
   // Camera movement
   std::shared_ptr<Camera> camera_;
   std::shared_ptr<Camera> headmount_camera_;
-  std::array<bool, 5> move_key_pressed_{ false, false, false, false, false };
+  std::array<bool, 6> move_key_pressed_{ false, false, false, false, false, false };
   double camera_move_speed_ = 1.0;
+
+  // Animation
+  bool animation_ = false;
+  Timestamp animation_start_time_;
+  Duration animation_time_;
 };
 }
 
