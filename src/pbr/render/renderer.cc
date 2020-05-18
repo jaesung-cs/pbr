@@ -48,9 +48,6 @@ void Renderer::Initialize()
   glEnable(GL_MULTISAMPLE);
   glEnable(GL_DEPTH_TEST);
 
-  program_color_.Link();
-  program_model_.Link();
-
   // Material initialization
   material_.Ambient() = Vector3f(0.5f, 0.5f, 0.5f);
   material_.Diffuse() = Vector3f(0.5f, 0.5f, 0.5f);
@@ -142,6 +139,8 @@ void Renderer::DrawScene(std::shared_ptr<Scene> scene, int width, int height)
   program_pointcloud_.UniformMatrix4f("projection", camera->Projection());
   program_pointcloud_.UniformMatrix4f("view", camera->View());
   program_pointcloud_.Uniform2f("screen_size", width, height);
+  program_pointcloud_.Uniform1i("color_texture", 0);
+  program_pointcloud_.Uniform1i("depth_texture", 1);
 
   program_model_.Use();
   program_model_.UniformMatrix4f("projection", camera->Projection());
@@ -255,19 +254,36 @@ void Renderer::DrawScene(std::shared_ptr<SceneNode> node, Affine3d transform)
   else if (node->IsPointcloud())
   {
     auto pointcloud_node = std::dynamic_pointer_cast<ScenePointcloud>(node);
+    
+    auto kinect = pointcloud_node->Kinect();
+    const auto& color_param = kinect->ColorCameraParam();
+    const auto& depth_param = kinect->DepthCameraParam();
 
-    auto& pointcloud = pointclouds_[node];
-
-    if (pointcloud_node->ShouldUpdate())
-    {
-      pointcloud.UpdatePointcloud(pointcloud_node->Pointcloud());
-      pointcloud_node->FinishedUpdate();
-    }
-
+    // Uniform variables
     program_pointcloud_.Use();
+
+    // TODO: upload uniform variables once on initialization
+    program_pointcloud_.Uniform4f("color_camera_param", color_param.Fx(), color_param.Fy(), color_param.Cx(), color_param.Cy());
+    program_pointcloud_.Uniform4f("depth_camera_param", depth_param.Fx(), depth_param.Fy(), depth_param.Cx(), depth_param.Cy());
+    program_pointcloud_.UniformMatrix3f("camera_rotation", kinect->CameraRotation());
+    program_pointcloud_.Uniform3f("camera_translation", kinect->CameraTranslation());
+
     program_pointcloud_.UniformMatrix4f("model", transform.cast<float>().matrix());
 
-    pointcloud.Draw();
+    // TODO: bind color image to TEXTURE0
+    auto color_image_widget = pointcloud_node->ColorImageWidget();
+    auto& color_texture = image_textures_[color_image_widget];
+    color_texture.Bind();
+
+    // TODO: bind depth image to TEXTURE1
+    glActiveTexture(GL_TEXTURE1);
+    auto depth_image_widget = pointcloud_node->DepthImageWidget();
+    auto& depth_texture = image_textures_[depth_image_widget];
+    depth_texture.Bind();
+
+    glActiveTexture(GL_TEXTURE0);
+
+    pointcloud_.Draw();
   }
 
   for (auto child : node->Children())

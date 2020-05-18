@@ -105,6 +105,11 @@ void Program::Uniform4f(const std::string& name, float f0, float f1, float f2, f
   glUniform4f(glGetUniformLocation(id_, name.c_str()), f0, f1, f2, f3);
 }
 
+void Program::UniformMatrix3f(const std::string & name, const Matrix3f& m)
+{
+  glUniformMatrix3fv(glGetUniformLocation(id_, name.c_str()), 1, GL_FALSE, m.data());
+}
+
 void Program::UniformMatrix4f(const std::string& name, const Matrix4f& m)
 {
   glUniformMatrix4fv(glGetUniformLocation(id_, name.c_str()), 1, GL_FALSE, m.data());

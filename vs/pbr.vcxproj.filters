@@ -9,9 +9,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="data">
-      <UniqueIdentifier>{24bf8ad9-96cc-4b15-aac9-3cfc5631e858}</UniqueIdentifier>
-    </Filter>
     <Filter Include="lib\stb">
       <UniqueIdentifier>{86d54e3c-bf74-4277-919c-dd1a8b7cd58d}</UniqueIdentifier>
     </Filter>
@@ -53,6 +50,12 @@
     </Filter>
     <Filter Include="src\pbr\sensor">
       <UniqueIdentifier>{8c461051-3963-46f3-8b39-e5d19fa7d75c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="git">
+      <UniqueIdentifier>{1143b934-c98b-49f6-a6a6-d90003cac883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external_data">
+      <UniqueIdentifier>{24bf8ad9-96cc-4b15-aac9-3cfc5631e858}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="..\src\pbr\scene\scene_pointcloud.cc">
       <Filter>src\pbr\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbr\render\gl\gl_pointcloud_client.cc">
+      <Filter>src\pbr\render\gl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\pbr\render\gl\gl_pointcloud.cc">
       <Filter>src\pbr\render\gl</Filter>
@@ -307,11 +313,14 @@
     <ClInclude Include="..\src\pbr\scene\scene_pointcloud.h">
       <Filter>src\pbr\scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\pbr\render\gl\gl_pointcloud.h">
-      <Filter>src\pbr\render\gl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\pbr\sensor\camera_param.h">
       <Filter>src\pbr\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\gl\gl_pointcloud_client.h">
+      <Filter>src\pbr\render\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbr\render\gl\gl_pointcloud.h">
+      <Filter>src\pbr\render\gl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -358,9 +367,21 @@
       <Filter>src\shader</Filter>
     </None>
     <None Include="..\..\fetch_ros\fetch_description\robots\fetch.urdf">
-      <Filter>data</Filter>
+      <Filter>external_data</Filter>
     </None>
     <None Include="..\src\shader\pointcloud.geom">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\.gitignore">
+      <Filter>git</Filter>
+    </None>
+    <None Include="..\src\shader\pointcloud_client.frag">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\pointcloud_client.geom">
+      <Filter>src\shader</Filter>
+    </None>
+    <None Include="..\src\shader\pointcloud_client.vert">
       <Filter>src\shader</Filter>
     </None>
   </ItemGroup>

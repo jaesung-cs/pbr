@@ -10,26 +10,7 @@ Kinect2::Kinect2()
   rotation_ << 0.999971346110444, -0.00756469826720314, 0.000286876615262462,
     0.00756522677983534, 0.999969600410407, -0.00188827932806725,
     -0.000272583630970059, 0.00189039550817223, 0.999998176049830;
-
-  Matrix3f m1, m2, m3, m4;
-
-  m1.setIdentity();
-  m1.block(0, 2, 2, 1) = color_param_.C();
-
-  m2.setIdentity();
-  m2(0, 0) = color_param_.Fx();
-  m2(1, 1) = color_param_.Fy();
-
-  m3.setIdentity();
-  m3(0, 0) = 1.f / depth_param_.Fx();
-  m3(1, 1) = 1.f / depth_param_.Fy();
-
-  m4.setIdentity();
-  m4.block(0, 2, 2, 1) = -depth_param_.C();
-
-  M2_ = m3 * m4;
-  M1_ = m1 * m2 * rotation_ * M2_;
-  T1_ = m1 * m2 * translation_;
+  //rotation_.setIdentity();
 }
 
 Kinect2::~Kinect2() = default;
@@ -262,31 +243,6 @@ bool Kinect2::GeneratePointcloudWithCameraParameters(const Image& color_image, c
       int idx = x + y * DepthWidth();
       auto depth = static_cast<float>(depth_image.Data<unsigned short>()[idx]);
 
-      Vector3f b = (Vector3f(x + 1.f, y + 1.f, 1.f) * depth);
-      Vector3f p = M2_ * b;
-
-      pointcloud.Position(idx)[0] = p(0) / 1000.f;
-      pointcloud.Position(idx)[1] = p(1) / 1000.f;
-      pointcloud.Position(idx)[2] = p(2) / 1000.f;
-
-      Vector3f c3 = M1_ * b + T1_;
-      Vector2i c(static_cast<int>(c3(0) / c3(2) + 0.5f), static_cast<int>(c3(1) / c3(2) + 0.5f));
-
-      if (c(0) < 0 || c(1) < 0 || c(0) >= ColorWidth() || c(1) >= ColorHeight())
-      {
-        pointcloud.Color(idx)[0] = 0.f;
-        pointcloud.Color(idx)[1] = 0.f;
-        pointcloud.Color(idx)[2] = 0.f;
-      }
-      else
-      {
-        int color_idx = c(0) + ColorWidth() * c(1);
-        pointcloud.Color(idx)[0] = color_image.Data<unsigned char>()[num_components * color_idx + 0] / 255.f;
-        pointcloud.Color(idx)[1] = color_image.Data<unsigned char>()[num_components * color_idx + 1] / 255.f;
-        pointcloud.Color(idx)[2] = color_image.Data<unsigned char>()[num_components * color_idx + 2] / 255.f;
-      }
-
-      /*
       // World space
       Vector3f p;
       p(0) = (x + 1 - depth_param_.Cx()) * depth_image.Data<unsigned short>()[idx] / depth_param_.Fx();
@@ -307,9 +263,6 @@ bool Kinect2::GeneratePointcloudWithCameraParameters(const Image& color_image, c
       c(0) = p(0) * color_param_.Fx() / p(2) + color_param_.Cx();
       c(1) = p(1) * color_param_.Fy() / p(2) + color_param_.Cy();
 
-      if (p(2) > 0.)
-        p = p;
-        
       // Check if color pixel coordinates are in bounds
       if (c(0) < 0 || c(1) < 0 || c(0) >= ColorWidth() || c(1) >= ColorHeight())
       {
@@ -324,7 +277,6 @@ bool Kinect2::GeneratePointcloudWithCameraParameters(const Image& color_image, c
         pointcloud.Color(idx)[1] = color_image.Data<unsigned char>()[num_components * color_idx + 1] / 255.f;
         pointcloud.Color(idx)[2] = color_image.Data<unsigned char>()[num_components * color_idx + 2] / 255.f;
       }
-      */
     }
   }
 

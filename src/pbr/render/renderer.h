@@ -61,10 +61,10 @@ private:
 
   std::unordered_map<std::string, gl::Model> models_;
   std::unordered_map<std::string, gl::Texture> textures_;
-  std::unordered_map<std::shared_ptr<SceneNode>, gl::Pointcloud> pointclouds_;
 
   gl::Axis axis_;
   gl::Grid grid_;
+  gl::Pointcloud pointcloud_{ 512, 424 }; // TODO: variable width and height
 
   std::unordered_map<std::shared_ptr<ImageWidget>, gl::Texture> image_textures_;
   gl::ImagePoint image_point_;

@@ -6,7 +6,8 @@ namespace pbr
 {
 namespace gl
 {
-Pointcloud::Pointcloud()
+Pointcloud::Pointcloud(int width, int height)
+  : width_(width), height_(height)
 {
 }
 
@@ -21,12 +22,9 @@ void Pointcloud::Draw()
   if (!generated_)
     Generate();
 
-  if (num_points_ > 0)
-  {
-    glBindVertexArray(vao_);
-    glDrawArrays(GL_POINTS, 0, num_points_);
-    glBindVertexArray(0);
-  }
+  glBindVertexArray(vao_);
+  glDrawArrays(GL_POINTS, 0, width_ * height_);
+  glBindVertexArray(0);
 }
 
 void Pointcloud::Clear()
@@ -51,37 +49,30 @@ void Pointcloud::Generate()
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
 
+  using BaseType = unsigned short;
+
   glBindVertexArray(vao_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferStorage(GL_ARRAY_BUFFER, sizeof(float) * 2097152, 0, GL_MAP_WRITE_BIT);
+  glBufferStorage(GL_ARRAY_BUFFER, sizeof(BaseType) * (width_ * height_) * 2, 0, GL_MAP_WRITE_BIT);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)0);
+  auto ptr = (BaseType*)glMapBufferRange(GL_ARRAY_BUFFER, 0, sizeof(BaseType) * (width_ * height_) * 2, GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_RANGE_BIT);
+  for (BaseType y = 0; y < height_; y++)
+  {
+    for (BaseType x = 0; x < width_; x++)
+    {
+      *(ptr++) = x;
+      *(ptr++) = y;
+    }
+  }
+  glUnmapBuffer(GL_ARRAY_BUFFER);
+
+  glVertexAttribIPointer(0, 2, GL_UNSIGNED_SHORT, 0, (void*)0);
   glEnableVertexAttribArray(0);
-
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
-  glEnableVertexAttribArray(1);
 
   glBindVertexArray(0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   generated_ = true;
-}
-
-void Pointcloud::UpdatePointcloud(const pbr::Pointcloud& pointcloud)
-{
-  if (!generated_)
-    Generate();
-
-  num_points_ = pointcloud.NumPoints();
-
-  if (num_points_ > 0)
-  {
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-    float* ptr = (float*)glMapBufferRange(GL_ARRAY_BUFFER, 0, sizeof(float) * pointcloud.NumPoints() * 6, GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_RANGE_BIT);
-    std::memcpy(ptr, pointcloud.Buffer().data(), sizeof(float) * pointcloud.NumPoints() * 6);
-    glUnmapBuffer(GL_ARRAY_BUFFER);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  }
 }
 }
 }

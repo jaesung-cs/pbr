@@ -3,9 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-bin/
-lib/
-data/
+/bin/
+/lib/
+/data/
 
 
 # User-specific files

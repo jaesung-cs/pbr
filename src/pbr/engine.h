@@ -39,7 +39,7 @@ public:
   void RandomizeRobotJoints();
 
 private:
-  int width_ = 1620;
+  int width_ = 1600;
   int height_ = 800;
 
   GLFWwindow* window_ = 0;
@@ -60,7 +60,7 @@ private:
   std::shared_ptr<DatasetWnp> dataset_wnp_;
 
   // Kinect sensor
-  std::unique_ptr<Kinect2> kinect_;
+  std::shared_ptr<Kinect2> kinect_;
   std::shared_ptr<ImageWidget> kinect_color_image_widget_;
   std::shared_ptr<ImageWidget> kinect_depth_image_widget_;
 

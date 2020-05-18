@@ -144,6 +144,21 @@ void Engine::Keyboard(int key, int action, int mods)
       case GLFW_KEY_2:
         scene_->SetViewCamera(1);
         break;
+
+        // Change sequence
+      case GLFW_KEY_UP:
+        dataset_->PreviousSequence();
+        break;
+
+        // Change sequence
+      case GLFW_KEY_DOWN:
+        dataset_->NextSequence();
+        break;
+
+        // Restart animation
+      case GLFW_KEY_ENTER:
+        dataset_->Rewind();
+        break;
       }
     }
   }
@@ -248,52 +263,54 @@ void Engine::Initialize()
   shelf_node->SetParent(root);
   */
 
-  // Pointcloud
-  pointcloud_node_ = std::make_shared<ScenePointcloud>();
-  //pointcloud_node_->Transform().translate(Vector3d(0.2, 0., 1.));
-  pointcloud_node_->Transform().rotate(AngleAxisd(90. * pi / 180., Vector3d(0., 1., 0.)));
-  pointcloud_node_->Transform().rotate(AngleAxisd(90. * pi / 180., Vector3d(0., 0., 1.)));
-
-  auto robot_camera_node = robot_node_->Link("head_camera_link");
-  robot_camera_node->AddChild(pointcloud_node_);
-  pointcloud_node_->SetParent(robot_camera_node);
-
-  // Dataset
-  dataset_wnp_ = std::make_shared<DatasetWnp>("..\\..\\dataset\\watch-n-patch");
-
-  dataset_ = dataset_wnp_;
-
-  // Widget initialization
+  // Screen widget initialization
   screen_widget_ = std::make_shared<Widget>(1620, 800);
 
-  scene_widget_ = std::make_shared<SceneWidget>(420, 0, 1200, 800);
+  // Dataset load
+  dataset_wnp_ = std::make_shared<DatasetWnp>("..\\..\\dataset\\watch-n-patch");
+  //dataset_wnp_ = std::make_shared<DatasetWnp>("..\\..\\dataset\\watchnpatch\\tools");
+  dataset_ = dataset_wnp_;
+
+  // Dataset images
+  color_image_widget_ = std::make_shared<ImageWidget>(0, 0, 400, 200);
+  screen_widget_->AddChild(color_image_widget_);
+  color_image_widget_->SetParent(screen_widget_);
+
+  depth_image_widget_ = std::make_shared<ImageWidget>(0, 200, 400, 200);
+  screen_widget_->AddChild(depth_image_widget_);
+  depth_image_widget_->SetParent(screen_widget_);
+
+  // Scene widget is initialized here, after defining two image widgets holding Kinect images
+  scene_widget_ = std::make_shared<SceneWidget>(400, 0, 1200, 800);
   scene_widget_->SetScene(scene_);
   screen_widget_->AddChild(scene_widget_);
   scene_widget_->SetParent(screen_widget_);
 
-  // Dataset images
-  color_image_widget_ = std::make_shared<ImageWidget>(10, 10, 400, 225);
-  screen_widget_->AddChild(color_image_widget_);
-  color_image_widget_->SetParent(screen_widget_);
-
-  depth_image_widget_ = std::make_shared<ImageWidget>(10, 245, 400, static_cast<int>(424.f / 512.f * 400.f));
-  screen_widget_->AddChild(depth_image_widget_);
-  depth_image_widget_->SetParent(screen_widget_);
-
   // Kinect images
-  kinect_ = std::make_unique<Kinect2>();
+  kinect_ = std::make_shared<Kinect2>();
 
-  /*
-  kinect_color_image_widget_ = std::make_shared<ImageWidget>(10, 10, 400, 225);
+  // Live Kinect sensor images
+  kinect_color_image_widget_ = std::make_shared<ImageWidget>(0, 400, 400, 200);
   kinect_color_image_widget_->UpdateTexture(kinect_->CreateColorImage());
   scene_widget_->AddChild(kinect_color_image_widget_);
   kinect_color_image_widget_->SetParent(scene_widget_);
 
-  kinect_depth_image_widget_ = std::make_shared<ImageWidget>(10, 245, 400, static_cast<int>(424.f / 512.f * 400.f));
+  kinect_depth_image_widget_ = std::make_shared<ImageWidget>(0, 600, 400, 200);
   kinect_depth_image_widget_->UpdateTexture(kinect_->CreateDepthImage());
   scene_widget_->AddChild(kinect_depth_image_widget_);
   kinect_depth_image_widget_->SetParent(scene_widget_);
-  */
+
+  // Pointcloud from images
+  pointcloud_node_ = std::make_shared<ScenePointcloud>(kinect_, color_image_widget_, depth_image_widget_); // Dataset images
+  //pointcloud_node_ = std::make_shared<ScenePointcloud>(kinect_, kinect_color_image_widget_, kinect_depth_image_widget_); // Live kinect images
+
+  // Attach pointcloud node to robot camera
+  //pointcloud_node_->Transform().translate(Vector3d(0.2, 0., 1.));
+  pointcloud_node_->Transform().rotate(AngleAxisd(90. * pi / 180., Vector3d(0., 1., 0.)));
+  pointcloud_node_->Transform().rotate(AngleAxisd(-90. * pi / 180., Vector3d(0., 0., 1.)));
+  auto robot_camera_node = robot_node_->Link("head_camera_link");
+  robot_camera_node->AddChild(pointcloud_node_);
+  pointcloud_node_->SetParent(robot_camera_node);
 }
 
 void Engine::Run()
@@ -374,14 +391,12 @@ void Engine::Run()
     // Update scene
 
     // Kinect scene update
-    /*
     if (kinect_->Update(kinect_color_image_widget_->Image(), kinect_depth_image_widget_->Image(), pointcloud_node_->Pointcloud()))
     {
       kinect_color_image_widget_->NeedUpdate();
       kinect_depth_image_widget_->NeedUpdate();
-      pointcloud_node_->NeedUpdate();
+      //pointcloud_node_->NeedUpdate();
     }
-    */
 
     // Load images from dataset
     color_image_widget_->UpdateTexture(dataset_->GetColorImage());
@@ -397,11 +412,17 @@ void Engine::Run()
     */
 
     // Generate point cloud using camera parameters
+    /*
     if (kinect_->GeneratePointcloudWithCameraParameters(dataset_->GetColorImage(), dataset_->GetDepthImage(), pointcloud_node_->Pointcloud()))
     {
       pointcloud_node_->NeedUpdate();
       dataset_->NextFrame();
     }
+    */
+
+    // Draw pointcloud without creating pointcloud
+    //pointcloud_node_->NeedUpdate();
+    dataset_->NextFrame();
 
     // Draw scene
     renderer_.Draw();

@@ -13,10 +13,11 @@ namespace gl
 class Pointcloud
 {
 public:
-  Pointcloud();
-  ~Pointcloud();
+  Pointcloud() = delete;
 
-  void UpdatePointcloud(const pbr::Pointcloud& pointcloud);
+  Pointcloud(int depth_width, int depth_height);
+
+  ~Pointcloud();
 
   void Draw();
 
@@ -24,13 +25,12 @@ private:
   void Clear();
   void Generate();
 
-  int num_points_ = 0;
+  int width_ = 0;
+  int height_ = 0;
 
   bool generated_ = false;
   GLuint vao_ = 0;
   GLuint vbo_ = 0;
-
-  int buffer_size_ = 0;
 };
 }
 }

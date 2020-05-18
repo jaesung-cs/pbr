@@ -34,6 +34,7 @@ public:
   void Uniform2f(const std::string& name, float f0, float f1);
   void Uniform3f(const std::string& name, const Vector3f& m);
   void Uniform4f(const std::string& name, float f0, float f1, float f2, float f3);
+  void UniformMatrix3f(const std::string& name, const Matrix3f& m);
   void UniformMatrix4f(const std::string& name, const Matrix4f& m);
 
 private:
