@@ -20,8 +20,8 @@ public:
   virtual int NumSequences() { return 0; }
   virtual int NumFrames() { return 0; }
 
-  virtual Image GetColorImage();
-  virtual Image GetDepthImage();
+  virtual std::shared_ptr<Image> GetColorImage();
+  virtual std::shared_ptr<Image> GetDepthImage();
   virtual Pointcloud GetPointcloud();
 
   auto Sequence() const noexcept { return sequence_idx_; }

@@ -18,17 +18,16 @@ public:
 
   bool IsImage() const noexcept override { return true; }
 
-  void UpdateTexture(Image&& texture);
+  void UpdateImage(std::shared_ptr<Image> texture);
 
-  auto& Image() { return image_; }
-  const auto& Image() const { return image_; }
+  auto Image() const { return image_; }
 
   void NeedUpdate() { need_update_ = true; }
   bool ShouldUpdate() const noexcept { return need_update_; }
   void FinishedUpdate();
 
 private:
-  pbr::Image image_;
+  std::shared_ptr<pbr::Image> image_;
   bool need_update_ = false;
 };
 }

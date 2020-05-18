@@ -95,12 +95,12 @@ void Renderer::DrawImage(std::shared_ptr<ImageWidget> image_widget, int x, int y
 
   if (image_widget->ShouldUpdate())
   {
-    texture.Update(image_widget->Image());
+    texture.Update(*image_widget->Image());
     image_widget->FinishedUpdate();
   }
 
   bool valid_texture = true;
-  switch (image_widget->Image().GlType())
+  switch (image_widget->Image()->GlType())
   {
   case GL_UNSIGNED_BYTE:
     program_image_color_.Use();

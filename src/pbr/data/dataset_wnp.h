@@ -24,12 +24,12 @@ public:
 
   void SequenceChanged() override;
 
-  Image GetColorImage() override;
-  Image GetDepthImage() override;
+  std::shared_ptr<Image> GetColorImage() override;
+  std::shared_ptr<Image> GetDepthImage() override;
   Pointcloud GetPointcloud() override;
 
-  Image LoadColorImage(int frame);
-  Image LoadDepthImage(int frame);
+  std::shared_ptr<Image> LoadColorImage(int frame);
+  std::shared_ptr<Image> LoadDepthImage(int frame);
 
 private:
   void LoadCurrentSequenceImages();
@@ -39,8 +39,8 @@ private:
   std::vector<std::string> sequences_;
   std::vector<std::vector<std::string>> frames_;
 
-  std::vector<Image> color_images_;
-  std::vector<Image> depth_images_;
+  std::vector<std::shared_ptr<Image>> color_images_;
+  std::vector<std::shared_ptr<Image>> depth_images_;
 };
 }
 

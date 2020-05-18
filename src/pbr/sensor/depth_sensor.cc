@@ -11,8 +11,8 @@ bool DepthSensor::UpdateDepthImage(Image& image)
   return false;
 }
 
-Image DepthSensor::CreateDepthImage()
+std::shared_ptr<Image> DepthSensor::CreateDepthImage()
 {
-  return Image(DepthWidth(), DepthHeight(), 1, (unsigned short)300);
+  return std::make_shared<Image>(DepthWidth(), DepthHeight(), 1, (unsigned short)0);
 }
 }

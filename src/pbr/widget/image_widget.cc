@@ -20,9 +20,9 @@ ImageWidget::~ImageWidget()
 {
 }
 
-void ImageWidget::UpdateTexture(pbr::Image&& image)
+void ImageWidget::UpdateImage(std::shared_ptr<pbr::Image> image)
 {
-  image_ = std::move(image);
+  image_ = image;
   need_update_ = true;
 }
 

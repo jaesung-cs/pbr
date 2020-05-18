@@ -16,7 +16,7 @@ public:
 
   virtual bool UpdateDepthImage(Image& image);
 
-  Image CreateDepthImage();
+  std::shared_ptr<Image> CreateDepthImage();
 
 private:
 };

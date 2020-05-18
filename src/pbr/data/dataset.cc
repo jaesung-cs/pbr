@@ -6,14 +6,14 @@ Dataset::Dataset() = default;
 
 Dataset::~Dataset() = default;
 
-Image Dataset::GetColorImage()
+std::shared_ptr<Image> Dataset::GetColorImage()
 {
-  return Image();
+  return std::make_shared<Image>();
 }
 
-Image Dataset::GetDepthImage()
+std::shared_ptr<Image> Dataset::GetDepthImage()
 {
-  return Image(1, 1, 1, { (unsigned short)0 });
+  return std::make_shared<Image>(1, 1, 1, (unsigned short)0);
 }
 
 Pointcloud Dataset::GetPointcloud()

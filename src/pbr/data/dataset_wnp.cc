@@ -50,8 +50,8 @@ void DatasetWnp::SequenceChanged()
 
 void DatasetWnp::LoadCurrentSequenceImages()
 {
-  std::vector<std::future<Image>> color_futures_(frames_[Sequence()].size());
-  std::vector<std::future<Image>> depth_futures_(frames_[Sequence()].size());
+  std::vector<std::future<std::shared_ptr<Image>>> color_futures_(frames_[Sequence()].size());
+  std::vector<std::future<std::shared_ptr<Image>>> depth_futures_(frames_[Sequence()].size());
 
   color_images_.clear();
   depth_images_.clear();
@@ -82,30 +82,28 @@ int DatasetWnp::NumFrames()
   return frames_[Sequence()].size();
 }
 
-Image DatasetWnp::LoadColorImage(int frame)
+std::shared_ptr<Image> DatasetWnp::LoadColorImage(int frame)
 {
   auto filename = directory_ + "\\" + sequences_[Sequence()] + "\\rgbjpg\\" + frames_[Sequence()][frame] + ".jpg";
-  Image image;
-  image.Load(filename);
+  auto image = std::make_shared<Image>();
+  image->Load(filename);
   return image;
 }
 
-Image DatasetWnp::GetColorImage()
+std::shared_ptr<Image> DatasetWnp::GetColorImage()
 {
   return color_images_[Frame()];
 }
 
-Image DatasetWnp::LoadDepthImage(int frame)
+std::shared_ptr<Image> DatasetWnp::LoadDepthImage(int frame)
 {
   auto filename = directory_ + "\\" + sequences_[Sequence()] + "\\depth\\" + frames_[Sequence()][frame] + ".mat";
-
-  Image result(8, 8, 1, (unsigned short)2000);
 
   auto pmat = matOpen(filename.c_str(), "r");
   if (pmat == NULL)
   {
     std::cout << "Error opening .mat file: " << filename << std::endl;
-    return result;
+    return nullptr;
   }
 
   auto depth = matGetVariable(pmat, "depth");
@@ -113,22 +111,22 @@ Image DatasetWnp::LoadDepthImage(int frame)
   {
     std::cout << "Error reading existing matrix \"depth\"" << filename << std::endl;
     matClose(pmat);
-    return result;
+    return nullptr;
   }
 
   if (mxGetNumberOfDimensions(depth) != 2)
   {
     std::cout << "Error reading matrix: not have two dimensions" << std::endl;
     matClose(pmat);
-    return result;
+    return nullptr;
   }
 
   // Column-major mat array
   double* ptr = mxGetPr(depth);
 
   // Row-major gl texture format
-  result = Image(DepthWidth(), DepthHeight(), 1, (unsigned short)0);
-  auto buffer = result.Data<unsigned short>();
+  auto result = std::make_shared<Image>(DepthWidth(), DepthHeight(), 1, (unsigned short)0);
+  auto buffer = result->Data<unsigned short>();
   for (int i = 0; i < DepthWidth(); i++)
   {
     for (int j = 0; j < DepthHeight(); j++)
@@ -145,7 +143,7 @@ Image DatasetWnp::LoadDepthImage(int frame)
   return result;
 }
 
-Image DatasetWnp::GetDepthImage()
+std::shared_ptr<Image> DatasetWnp::GetDepthImage()
 {
   return depth_images_[Frame()];
 }

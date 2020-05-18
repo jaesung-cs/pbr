@@ -11,8 +11,8 @@ bool ColorSensor::UpdateColorImage(Image& image)
   return false;
 }
 
-Image ColorSensor::CreateColorImage()
+std::shared_ptr<Image> ColorSensor::CreateColorImage()
 {
-  return Image(ColorWidth(), ColorHeight(), 4, (unsigned char)0);
+  return std::make_shared<Image>(ColorWidth(), ColorHeight(), 4, (unsigned char)0);
 }
 }

@@ -16,7 +16,7 @@ public:
 
   virtual bool UpdateColorImage(Image& image);
 
-  Image CreateColorImage();
+  std::shared_ptr<Image> CreateColorImage();
 
 private:
 };

@@ -291,14 +291,14 @@ void Engine::Initialize()
 
   // Live Kinect sensor images
   kinect_color_image_widget_ = std::make_shared<ImageWidget>(0, 400, 400, 200);
-  kinect_color_image_widget_->UpdateTexture(kinect_->CreateColorImage());
-  scene_widget_->AddChild(kinect_color_image_widget_);
-  kinect_color_image_widget_->SetParent(scene_widget_);
+  kinect_color_image_widget_->UpdateImage(kinect_->CreateColorImage());
+  screen_widget_->AddChild(kinect_color_image_widget_);
+  kinect_color_image_widget_->SetParent(screen_widget_);
 
   kinect_depth_image_widget_ = std::make_shared<ImageWidget>(0, 600, 400, 200);
-  kinect_depth_image_widget_->UpdateTexture(kinect_->CreateDepthImage());
-  scene_widget_->AddChild(kinect_depth_image_widget_);
-  kinect_depth_image_widget_->SetParent(scene_widget_);
+  kinect_depth_image_widget_->UpdateImage(kinect_->CreateDepthImage());
+  screen_widget_->AddChild(kinect_depth_image_widget_);
+  kinect_depth_image_widget_->SetParent(screen_widget_);
 
   // Pointcloud from images
   pointcloud_node_ = std::make_shared<ScenePointcloud>(kinect_, color_image_widget_, depth_image_widget_); // Dataset images
@@ -391,7 +391,7 @@ void Engine::Run()
     // Update scene
 
     // Kinect scene update
-    if (kinect_->Update(kinect_color_image_widget_->Image(), kinect_depth_image_widget_->Image(), pointcloud_node_->Pointcloud()))
+    if (kinect_->Update(*kinect_color_image_widget_->Image(), *kinect_depth_image_widget_->Image(), pointcloud_node_->Pointcloud()))
     {
       kinect_color_image_widget_->NeedUpdate();
       kinect_depth_image_widget_->NeedUpdate();
@@ -399,8 +399,8 @@ void Engine::Run()
     }
 
     // Load images from dataset
-    color_image_widget_->UpdateTexture(dataset_->GetColorImage());
-    depth_image_widget_->UpdateTexture(dataset_->GetDepthImage());
+    color_image_widget_->UpdateImage(dataset_->GetColorImage());
+    depth_image_widget_->UpdateImage(dataset_->GetDepthImage());
 
     // Generate point cloud using Kinect v2 mapper
     /*
