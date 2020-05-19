@@ -326,8 +326,8 @@ void Engine::Initialize()
   kinect_depth_image_widget_->SetParent(screen_widget_);
 
   // Pointcloud from images
-  pointcloud_node_ = std::make_shared<ScenePointcloud>(kinect_, color_image_widget_, depth_image_widget_); // Dataset images
-  //pointcloud_node_ = std::make_shared<ScenePointcloud>(kinect_, kinect_color_image_widget_, kinect_depth_image_widget_); // Live kinect images
+  //pointcloud_node_ = std::make_shared<ScenePointcloud>(kinect_, color_image_widget_, depth_image_widget_); // Dataset images
+  pointcloud_node_ = std::make_shared<ScenePointcloud>(kinect_, kinect_color_image_widget_, kinect_depth_image_widget_); // Live kinect images
 
   // Attach pointcloud node to robot camera
   //pointcloud_node_->Transform().translate(Vector3d(0.2, 0., 1.));
@@ -411,7 +411,7 @@ void Engine::Run()
     headmount_camera_->SetPosition(headmount_camera_transform_matrix.block(0, 3, 3, 1));
 
     // Kinect scene update
-    if (kinect_->Update(*kinect_color_image_widget_->Image(), *kinect_depth_image_widget_->Image(), pointcloud_node_->Pointcloud()))
+    if (kinect_->Update(*kinect_color_image_widget_->Image(), *kinect_depth_image_widget_->Image()))
     {
       kinect_color_image_widget_->NeedUpdate();
       kinect_depth_image_widget_->NeedUpdate();

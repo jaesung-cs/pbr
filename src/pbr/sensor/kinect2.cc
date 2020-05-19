@@ -33,6 +33,47 @@ void Kinect2::Open()
   }
 }
 
+bool Kinect2::Update(Image& color_image, Image& depth_image)
+{
+  if (!opened_)
+    Open();
+  if (!opened_)
+    return false;
+
+  IMultiSourceFrame* frame = NULL;
+  if (SUCCEEDED(reader_->AcquireLatestFrame(&frame)))
+  {
+    IColorFrame* color_frame = NULL;
+    IColorFrameReference* color_frameref = NULL;
+    frame->get_ColorFrameReference(&color_frameref);
+    color_frameref->AcquireFrame(&color_frame);
+    if (color_frameref)
+      color_frameref->Release();
+    if (color_frame)
+      color_frame->CopyConvertedFrameDataToArray(ColorWidth() * ColorHeight() * 4, color_image.Data<unsigned char>(), ColorImageFormat_Rgba);
+
+    IDepthFrame* depth_frame = NULL;
+    IDepthFrameReference* depth_frameref = NULL;
+    frame->get_DepthFrameReference(&depth_frameref);
+    depth_frameref->AcquireFrame(&depth_frame);
+    if (depth_frameref)
+      depth_frameref->Release();
+    if (depth_frame)
+      depth_frame->CopyFrameDataToArray(DepthWidth() * DepthHeight(), depth_image.Data<unsigned short>());
+
+    if (color_frame)
+      color_frame->Release();
+    if (depth_frame)
+      depth_frame->Release();
+
+    if (frame)
+      frame->Release();
+    return true;
+  }
+
+  return false;
+}
+
 bool Kinect2::Update(Image& color_image, Image& depth_image, Pointcloud& pointcloud)
 {
   if (!opened_)

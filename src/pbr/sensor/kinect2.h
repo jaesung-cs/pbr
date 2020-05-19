@@ -28,6 +28,7 @@ public:
   bool UpdateColorImage(Image& image) override;
   bool UpdateDepthImage(Image& image) override;
 
+  bool Update(Image& color_image, Image& depth_image);
   bool Update(Image& color_image, Image& depth_image, Pointcloud& pointcloud);
 
   bool GeneratePointcloudWithCoordinateMapper(const Image& color_image, const Image& depth_image, Pointcloud& pointcloud);
