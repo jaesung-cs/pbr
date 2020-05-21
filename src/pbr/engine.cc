@@ -275,18 +275,23 @@ void Engine::Initialize()
 
   // Bookshelf
   constexpr double pi = 3.1415926535897932384626433832795;
-  /*
   auto shelf_node = std::make_shared<SceneMesh>("..\\data\\shelf2\\Estanteria.dae");
   shelf_node->DiffuseTextureFilename() = "..\\data\\shelf2\\1.png";
   shelf_node->Transform().translate(Vector3d(0.8, 0.5, 0));
-  shelf_node->Transform().rotate(AngleAxisd(-60. * pi / 180., Vector3d(0., 0., 1.)));
+  //shelf_node->Transform().rotate(AngleAxisd(-60. * pi / 180., Vector3d(0., 0., 1.)));
   shelf_node->Transform().translate(Vector3d(0., 0., 0.78));
   shelf_node->Transform().scale(0.01);
   shelf_node->Recenter();
   shelf_node->TexCoordScale() = 0.01;
   root->AddChild(shelf_node);
   shelf_node->SetParent(root);
-  */
+
+  auto table_node = std::make_shared<SceneMesh>("..\\data\\table\\simple_table.stl");
+  table_node->Recenter();
+  table_node->Transform().rotate(AngleAxisd(-90. * pi / 180., Vector3d(1., 0., 0.)));
+  table_node->Transform().scale(0.01);
+  root->AddChild(table_node);
+  table_node->SetParent(root);
 
   // Screen widget initialization
   screen_widget_ = std::make_shared<Widget>(1620, 800);
